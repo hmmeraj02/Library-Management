@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container d-flex flex-wrap px-5 pt-3 align-items-center">
+    <div class="col-6">
+        <h1>Welcome to Dwip Library</h1>
+        <p>A library is a curated collection of organized resources, typically focused on books and other media, that is accessible for reference, borrowing, or study. Libraries serve as hubs of knowledge, offering a wide range of materials, including books, periodicals, digital resources, and multimedia content. They play a vital role in education, research, and community development by providing a quiet space for study, access to information, and fostering a culture of learning. Libraries can be public, academic, school, or specialized, each tailored to meet the informational needs of its intended audience.</p>
+    </div>
+    <div class="col-6">
+        <img class="w-75" src="{% static "./img/lords_library.jpg" %}" alt="">
+    </div>
+</div>
+<div class="text-center mt-5">
+    {% for cat in category %}
+    <a class="btn btn-secondary" href="{% url "category_wise_book" cat.slug %}">
+        {{cat.name}}
+    </a>
+    {% endfor %}
+</div>
+<div class="col-10 p-3">
+    <h4 class='text-center'>{{ book|length }} books found</h4>
+    <div class="d-flex flex-wrap justify-content-center px-3 pt-5">
+        {% for boi in book %}
+        <div class="col-sm-3 mb-3 mb-sm-0">
+            <div class="card mx-2">
+              <div class="card-body">
+                <img src="{{boi.image.url}}" class="card-img-top" alt="...">
+                <h5 class="card-title">{{boi.title}}</h5>
+                <p class="card-text">Author: {{boi.author}}</p>
+                <p class="card-text">Price: ${{boi.price}}</p>
+                <p class="card-text"><a href="{% url "book_detail" boi.id %}" class="text-dark"><small>View Details</small></a></p>
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

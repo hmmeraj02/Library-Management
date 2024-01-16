@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container d-flex flex-wrap px-5 pt-3 align-items-center">
+    <div class="col-6">
+        <img class="w-75" src="{{book.image.url}}" alt="">
+    </div>
+    <div class="col-6">
+        <div class="card mx-2">
+            <div class="card-body">
+              <h4 class="card-title">{{book.title}}</h5>
+              <p class="card-text">Author: {{book.author}}</p>
+              <p class="card-text">Price: ${{book.price}}</p>
+              <p class="card-text">Description: {{book.description}}</p>
+              <p>
+                Category : {% for cat in book.genre.all %}
+                <button class="btn btn-warning btn-sm m-2" disabled>
+                    {{cat.name}}
+                </button>
+                {% endfor %}
+              </p>
+              {% if request.user.is_authenticated %}
+              <a class="btn btn-info" href="{% url "borrow_book" book.id %}">Borrow Now</a>
+              {% endif %}
+            </div>
+          </div>
+    </div>
+</div>
+
+<div class="card m-2">
+    <div class="card-header bg-secondary text-white">
+      <h5>Total Comments ({{book.reviews.count}})</h5>
+    </div>
+    {% for review in reviews %}
+    <div class="card-body border m-2">
+      <p><b>{{review.user.first_name}} {{review.user.last_name}}</b> <small>{{review.created_on}}</small></p>
+      <blockquote class="blockquote">
+        <footer class="blockquote-footer">{{review.text|linebreaks}}</footer>
+      </blockquote>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
